@@ -22,7 +22,13 @@ app.get('/', (req, res) => {
     res.send("API Working");
 });
 app.get("/debug-sentry", function mainHandler(req, res) {
-    throw new Error("My first Sentry error!");
+    try {
+        // your main logic here
+    } catch (err) {
+        console.error(err);
+        Sentry.captureException(err);
+        res.status(500).send("Something went wrong.");
+    }
 });
 app.post('/webhooks', clerkWebhooks)
 
